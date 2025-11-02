@@ -1,23 +1,27 @@
 import pandas as pd
+from datetime import timedelta
 
-# Ruta del archivo (misma carpeta)
 FILE_PATH = "datos_crudos.xlsb"
-
-# Leer la única hoja del archivo
 df = pd.read_excel(FILE_PATH, engine="pyxlsb")
 
-# Filtrar por modo METRO
+# Filtrar por METRO
 df_metro = df[df["Modo"].str.upper() == "METRO"].copy()
 
-# Convertir columna 'Media_hora' a formato hora
-df_metro["Media_hora"] = pd.to_datetime(df_metro["Media_hora"], errors="coerce").dt.time
+#pasar a hora
+def convertir_hora_excel(valor):
+    try:
+        return (pd.Timestamp('1899-12-30') + timedelta(days=float(valor))).time()
+    except:
+        return pd.NaT
 
-# Separar en tres DataFrames según tipo de día
+df_metro["Media_hora"] = df_metro["Media_hora"].apply(convertir_hora_excel)
+
+# Separar por tipo de día
 df_laboral = df_metro[df_metro["Tipo_dia"].str.upper() == "LABORAL"].copy()
 df_sabado = df_metro[df_metro["Tipo_dia"].str.upper() == "SABADO"].copy()
 df_domingo = df_metro[df_metro["Tipo_dia"].str.upper() == "DOMINGO"].copy()
 
-# Mostrar conteo de registros por categoría
+# pruebas
 print("Total METRO:", len(df_metro))
 print("LABORAL:", len(df_laboral))
 print("SABADO:", len(df_sabado))
