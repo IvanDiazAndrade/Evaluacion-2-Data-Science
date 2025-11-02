@@ -15,6 +15,9 @@ def convertir_hora_excel(valor):
         return pd.NaT
 
 df_metro["Media_hora"] = df_metro["Media_hora"].apply(convertir_hora_excel)
+# Quitar filas con 0 o NaN
+df_metro = df_metro[df_metro["Subidas_Promedio"] != 0]
+df_metro = df_metro.dropna(subset=["Subidas_Promedio"])
 
 # Separar por tipo de día
 df_laboral = df_metro[df_metro["Tipo_dia"].str.upper() == "LABORAL"].copy()
@@ -27,3 +30,4 @@ print("LABORAL:", len(df_laboral))
 print("SABADO:", len(df_sabado))
 print("DOMINGO:", len(df_domingo))
 print(df_metro.head())
+
