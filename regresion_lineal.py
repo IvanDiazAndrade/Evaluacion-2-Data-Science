@@ -1,4 +1,4 @@
-from limpio import df_laboral, df_sabado, df_domingo
+from limpieza import df_laboral, df_sabado, df_domingo
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
