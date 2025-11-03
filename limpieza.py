@@ -2,7 +2,11 @@ import pandas as pd
 from datetime import timedelta
 
 FILE_PATH = "datos_crudos.xlsb"
+
 df = pd.read_excel(FILE_PATH, engine="pyxlsb")
+
+df = df.drop(columns=["SIMIT"])
+
 
 for col in ["Modo", "Comuna", "Tipo_dia"]:
     if col in df.columns:
@@ -38,3 +42,4 @@ print("LABORAL:", len(df_laboral))
 print("SABADO:", len(df_sabado))
 print("DOMINGO:", len(df_domingo))
 print(df_metro.head())
+
